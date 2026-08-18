@@ -1,5 +1,7 @@
 # Video QA Challenge - Android E2E Tests
 
+[![Android E2E Tests](https://github.com/ricardorlg/dpg-interview/actions/workflows/android-e2e.yml/badge.svg)](https://github.com/ricardorlg/dpg-interview/actions/workflows/android-e2e.yml)
+
 Android end-to-end test automation for the deterministic Video QA Challenge
 application. The suite covers consent, the video catalogue, video details, and
 the player state machine.
