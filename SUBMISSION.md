@@ -47,14 +47,18 @@ representative reusable prompts used for test and documentation work.
 ## Running the Tests
 
 1. Start an Android emulator with device ID `emulator-5554`.
-2. Start an Appium server on port `4723`.
-3. Ensure `apps/VideoQAChallenge-debug.apk` is available.
-4. Run `npm run build`.
-5. Run `npm run run.android.tests`.
+2. Ensure `apps/VideoQAChallenge-debug.apk` is available.
+3. Run `npm run build`.
+4. Run `npm run run.android.tests`.
 
 The Android configuration is in `test/config/android.local.conf.ts`. It targets
 UIAutomator2 and enables exact accessibility-ID matching through
-`appium:disableIdLocatorAutocompletion`.
+`appium:disableIdLocatorAutocompletion`. The WebdriverIO Appium service starts
+the project-installed Appium server automatically, so no separate local Appium
+installation or running server is required. If dependency installation fails
+because the Appium service dependencies cannot be installed, temporarily
+comment out the `services` section in `android.local.conf.ts` and use an
+externally running Appium server instead.
 
 ## Test Execution Report
 

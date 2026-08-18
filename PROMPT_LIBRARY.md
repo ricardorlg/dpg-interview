@@ -14,12 +14,14 @@ WebdriverIO 9, Appium 3.6.0, UIAutomator2, Mocha, and the APK at
 repository and `actions/setup-node@v6` with Node.js 24 and npm caching. Install
 dependencies with `npm ci`, then verify the source with `npm run build`.
 
-Install Appium 3.6.0 globally and install its UIAutomator2 driver. Use
-`reactivecircus/android-emulator-runner@v2` to create a headless Pixel 6 Android
-16 emulator with API level 36, Google APIs, and x86_64 architecture. While the
-emulator is running, start Appium at `127.0.0.1:4723`, wait for
-`http://127.0.0.1:4723/status` to respond, and execute
-`npm run run.android.tests`.
+Use `reactivecircus/android-emulator-runner@v2` to create a headless Pixel 6
+Android 16 emulator with API level 36, Google APIs, and x86_64 architecture.
+Do not install or start Appium separately: the WebdriverIO Appium service starts
+the project-installed server when `npm run run.android.tests` runs. If
+dependency installation fails because the Appium service dependencies cannot be
+installed, temporarily comment out the `services` section in
+`test/config/android.local.conf.ts` and start an external Appium server before
+executing `npm run run.android.tests`.
 
 Set read-only repository permissions, a 30-minute job timeout, and a
 branch-scoped concurrency group that cancels stale manual runs. Upload
@@ -38,8 +40,13 @@ TypeScript, WebdriverIO 9, Appium, UIAutomator2, and Mocha, and describe the
 black-box Screen Object approach.
 
 Include prerequisites for Node.js/npm, Android SDK and an emulator or device,
-an Appium server on port 4723, and apps/VideoQAChallenge-debug.apk. Give exact
-commands in this order:
+and apps/VideoQAChallenge-debug.apk. State that the WebdriverIO Appium service
+starts the project-installed Appium server automatically, so a separate local
+Appium installation or running server is not required. Explain that, if
+dependency installation fails because the Appium service dependencies cannot be
+installed, the `services` section in `test/config/android.local.conf.ts` should
+be temporarily commented out and an external Appium server must be used. Give
+exact commands in this order:
 1. npm install
 2. npm run build
 3. npm run run.android.tests

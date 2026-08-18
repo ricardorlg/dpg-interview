@@ -35,14 +35,6 @@ jobs:
       - name: Install project dependencies
         run: npm ci
 
-      - name: Build TypeScript
-        run: npm run build
-
-      - name: Install Appium and UIAutomator2
-        run: |
-          npm install --global appium@3.6.0
-          appium driver install uiautomator2
-
       - name: Start emulator, Appium, and Android tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -51,11 +43,7 @@ jobs:
           arch: x86_64
           profile: pixel_7_pro
           emulator-boot-timeout: 300
-          script: |
-            appium --address 127.0.0.1 --port 4723 > appium.log 2>&1 &
-            for attempt in $(seq 1 30); do curl --fail --silent --show-error http://127.0.0.1:4723/status && break; sleep 1; done
-            curl --fail --silent --show-error http://127.0.0.1:4723/status
-            npm run run.android.tests
+          script: npm run run.android.tests
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v6

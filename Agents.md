@@ -59,7 +59,7 @@ Do not use coordinates, visible text, view hierarchy positions, resource IDs inf
    });
    ```
 
-9. Author and inspect the flow with the WebdriverIO MCP using the Android capabilities below. Select the APK from `apps/` as the application path when starting the MCP session.
+9. Author and inspect the flow with the WebdriverIO MCP using the Android capabilities below. The MCP requires Appium to be running independently before the session starts; the WebdriverIO Appium service does not start it for MCP inspection. Select the APK from `apps/` as the application path when starting the MCP session.
 
    ```json
    {
@@ -78,7 +78,12 @@ Do not use coordinates, visible text, view hierarchy positions, resource IDs inf
 
 ## Running Tests
 
-Start an Appium server and Android emulator before running tests.
+Start an Android emulator before running tests. The WebdriverIO Appium service
+starts the project-installed Appium server automatically, so no separate local
+Appium installation or running server is required. If dependency installation
+fails because the Appium service dependencies cannot be installed, temporarily
+comment out the `services` section in `test/config/android.local.conf.ts`; the
+test run will then require an externally running Appium server.
 
 - To run one new test, temporarily add `.only` to its associated Mocha `it`; to run one changed spec, add `.only` to its `describe`; then run:
 
@@ -117,7 +122,7 @@ Add a detailed "Adding a New Test" section that requires setup, navigation, and 
   "appium:allowInvisibleElements": true,
   "appium:enableMultiWindows": true
 }
-State that the MCP session must select the APK from apps/.
+State that the MCP session must select the APK from apps/ and that Appium must be running independently before the MCP session starts; the WebdriverIO Appium service does not start Appium for MCP inspection.
 
-Include running instructions: temporarily run one changed test by adding .only to its it or one changed spec by adding .only to its describe, then execute npm run run.android.tests and remove .only after validation; run all tests by removing all .only markers and executing npm run run.android.tests only when explicitly required. Include deterministic-state, explicit-wait, Debug Options, existing reset-hook, and risk-priority guidance from TEST_PLAN.md.
+Include running instructions: start an Android emulator, then temporarily run one changed test by adding .only to its it or one changed spec by adding .only to its describe, then execute npm run run.android.tests and remove .only after validation; run all tests by removing all .only markers and executing npm run run.android.tests only when explicitly required. State that the project-installed Appium server starts automatically through the WebdriverIO Appium service, so a separate local Appium installation or running server is not required. State that if dependency installation fails because the Appium service dependencies cannot be installed, the `services` section in `test/config/android.local.conf.ts` must be temporarily commented out and the test run must use an externally running Appium server. Include deterministic-state, explicit-wait, Debug Options, existing reset-hook, and risk-priority guidance from TEST_PLAN.md.
 ```

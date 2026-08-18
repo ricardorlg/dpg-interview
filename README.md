@@ -30,11 +30,14 @@ rules in `Agents.md`.
 
 - Node.js 25.9.0 and npm 11.12.1
 - Android SDK and an Android emulator or device
-- Appium 3.6.0 running on port `4723`
 - Android Emulator with Android 16
 - An Android device available as `emulator-5554`, or equivalent values supplied
   through `.env.local`
 - The APK at `apps/VideoQAChallenge-debug.apk`
+
+Appium is installed with the project dependencies and started automatically by
+the WebdriverIO Appium service. A separate local Appium installation or server
+is not required.
 
 ## Running the Tests
 
@@ -46,15 +49,13 @@ rules in `Agents.md`.
 
 2. Start the Android emulator or connect a supported Android device.
 
-3. Start Appium on port `4723`.
-
-4. Build the TypeScript project:
+3. Build the TypeScript project:
 
    ```bash
    npm run build
    ```
 
-5. Run the Android end-to-end suite:
+4. Run the Android end-to-end suite:
 
    ```bash
    npm run run.android.tests
@@ -63,6 +64,10 @@ rules in `Agents.md`.
 The Android capabilities are configured in
 `test/config/android.local.conf.ts`. The suite uses UIAutomator2 and exact
 accessibility-ID matching through `appium:disableIdLocatorAutocompletion`.
+If dependency installation fails because the Appium service dependencies cannot
+be installed, temporarily comment out the `services` section in
+`android.local.conf.ts`. This disables automatic Appium startup, so the test
+run must use an externally running Appium server.
 
 ## Allure Report
 

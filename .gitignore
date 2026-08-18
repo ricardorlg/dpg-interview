@@ -46,3 +46,5 @@ allure-report/
 allure-results/
 .claude/
 skills-lock.json
+junit-results
+logs/
