@@ -10,11 +10,11 @@ the Android E2E suite only through `workflow_dispatch`.
 
 The repository is an Android-only Video QA Challenge project using TypeScript,
 WebdriverIO 9, Appium 3.6.0, UIAutomator2, Mocha, and the APK at
-`apps/VideoQAChallenge-debug.apk`. Use `actions/checkout@v6` to check out the
-repository and `actions/setup-node@v6` with Node.js 24 and npm caching. Install
+`apps/VideoQAChallenge-debug.apk`. Use `actions/checkout@v7` to check out the
+repository and `actions/setup-node@v7` with Node.js 24 and npm caching. Install
 dependencies with `npm ci`, then verify the source with `npm run build`.
 
-Use `reactivecircus/android-emulator-runner@v2` to create a headless Pixel 6
+Use `reactivecircus/android-emulator-runner@v2` to create a headless Pixel 7 Pro
 Android 16 emulator with API level 36, Google APIs, and x86_64 architecture.
 Do not install or start Appium separately: the WebdriverIO Appium service starts
 the project-installed server when `npm run run.android.tests` runs. If
@@ -28,6 +28,38 @@ branch-scoped concurrency group that cancels stale manual runs. Upload
 `allure-results/` and the Appium log as a 14-day artifact whenever the run is
 not cancelled. Do not add retries that could conceal flaky end-to-end tests, do
 not require secrets, and keep all workflow labels and comments in English.
+```
+
+## Allure History and Android Version Matrix
+
+```text
+Plan and implement the next CI reporting and Android-compatibility improvements
+for the Video QA Challenge Android E2E project. Keep all code, workflow labels,
+comments, and documentation in English.
+
+The existing `.github/workflows/android-e2e.yml` workflow uses
+`workflow_dispatch`, runs the full suite on an Android 16 (API level 36) Google
+APIs Pixel 7 Pro emulator, generates an Allure report, and deploys it to GitHub
+Pages. Android 16 is the default because it is convenient and repeatable for
+local and GitHub-hosted CI execution.
+
+Add a workflow-dispatch Android-version input that defaults to Android 16 and
+drives the emulator API level through an explicit, documented mapping. Validate
+unsupported input values clearly. Do not run multiple Android emulators in
+parallel on GitHub-hosted runners: operating a multi-version emulator matrix
+there is costly and difficult. Document a future migration to a device farm such
+as Sauce Labs or BrowserStack for parallel coverage across supported Android
+versions and devices.
+
+Persist Allure execution history across GitHub Pages deployments. Before
+generating a report, retrieve the prior published report when it exists and copy
+its `history` directory into `allure-results/history`; then generate and deploy
+the next report. The first run must succeed when no history exists. Retain
+existing JUnit reporting, Appium-log artifacts, manual triggering, concurrency,
+and the published Pages report. Update README.md, TEST_PLAN.md, and
+SUBMISSION.md with the Android 16 rationale, the version parameter, device-farm
+future work, and Allure-history behavior. Do not claim that a multi-version
+matrix or historical data is available until the workflow implements it.
 ```
 
 ## Project README

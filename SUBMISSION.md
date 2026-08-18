@@ -87,17 +87,23 @@ log, generates the Allure HTML report, and deploys it to GitHub Pages at
 | Runtime | Node.js 25.9.0 and npm 11.12.1. |
 | Primary environment rationale | The emulator was selected for convenience and repeatable local execution. |
 | Latest audit validation | `npm run build` and `npm run eslint:check` completed successfully. |
-| Full end-to-end result | `npm run run.android.tests` completed successfully on the Android emulator: 21 passing tests in 3 minutes 0.5 seconds; one Home-screen test passed on its first retry. |
+| Full end-to-end result | Local execution of `npm run run.android.tests` on the Android emulator completed successfully: 21 passing tests in 3 minutes 0.5 seconds; one Home-screen test passed on its first retry. |
 | Test scope | Consent: 5 tests; Home: 5 tests; Video Details: 3 tests; Video Player: 8 tests. |
 | Personal-device execution | The tests were also executed on a personal Android device. |
 
 ## Future Work
 
 1. Integrate a device farm such as Sauce Labs or BrowserStack to run tests in
-   parallel across a broader Android device matrix.
+   parallel across a broader Android device and Android-version matrix. Android
+   16 was used for this delivery because it is convenient and repeatable locally
+   and in CI. Add an Android-version workflow parameter, keeping Android 16 as
+   the default. Running multiple emulator versions concurrently on GitHub-hosted
+   CI is more difficult; a device farm would make that matrix practical.
 2. Add iOS support by supplying iOS selectors while reusing the existing
    scenarios, Screen Objects, and test logic where platform behavior is shared.
 3. Complete the remaining planned scenarios recorded in `TEST_PLAN.md`.
+4. Preserve Allure execution history between GitHub Actions runs so the published
+   report includes trend data instead of only the latest execution.
 
 ## AI Usage
 

@@ -109,6 +109,8 @@ coverage objective, so the former P1-09 scenario is intentionally out of scope.
 | P2-02 | Add a fixed non-Amsterdam reference card with confirmed detail metadata, then verify Details navigation and Back without reusing the Amsterdam-specific oracle. |
 | P2-03 | Start from successful content, configure empty, server-error, and slow states in separate independent tests, and assert that no previously loaded card remains visible. |
 | P2-04 | Define the intended relaunch persistence lifetime, then combine post-playback navigation, app relaunch, consent, and retained-progress assertions in independent scenarios. |
+| Allure execution history | Persist the previous published report's `history` directory before generating the next Allure report, then publish the updated report so trend and historical execution data remain available. |
+| Android-version parameter and matrix | Add a `workflow_dispatch` input for the Android version. Keep Android 16 as the default because it was selected for convenient, repeatable local and CI execution. GitHub-hosted CI makes concurrent emulator versions costly and difficult to operate; once a device farm is available, run the suite across a supported Android-version and device matrix. |
 
 ## Assignment Deliverables Status
 
