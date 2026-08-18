@@ -60,6 +60,25 @@ because the Appium service dependencies cannot be installed, temporarily
 comment out the `services` section in `android.local.conf.ts` and use an
 externally running Appium server instead.
 
+### GitHub Actions Execution
+
+The suite can be executed without a local Android environment through the
+manually triggered `Android E2E Tests` workflow.
+
+1. Open the repository in GitHub and go to **Actions**.
+2. Select **Android E2E Tests**.
+3. Click **Run workflow**, select the branch to validate, and click **Run workflow**
+   again.
+4. Open the completed run to review the test summary, the Appium log artifact,
+   and the Allure report.
+
+The `workflow_dispatch` workflow checks out the selected branch, enables KVM,
+sets up Node.js 24 with npm caching, installs dependencies with `npm ci`, and
+starts an Android 16 Google APIs Pixel 7 Pro emulator. It runs the Android E2E
+suite, publishes merged JUnit results in the Actions run, uploads the Appium
+log, generates the Allure HTML report, and deploys it to GitHub Pages at
+[ricardorlg.github.io/dpg-interview](https://ricardorlg.github.io/dpg-interview/).
+
 ## Test Execution Report
 
 | Field | Record |

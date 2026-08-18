@@ -173,6 +173,25 @@ backend rather than maintained locally.
 
 On failure, retain the visible application state and execution logs as evidence.
 
+## CI/CD Execution and Reporting
+
+The manually triggered GitHub Actions workflow, **Android E2E Tests**, provides
+repeatable CI execution without requiring a local Android environment. From the
+repository's **Actions** tab, select the workflow, click **Run workflow**, choose
+the branch to validate, and click **Run workflow** again.
+
+The workflow provisions an Android 16 Google APIs Pixel 7 Pro emulator with
+KVM acceleration, installs the locked project dependencies, and runs the full
+Android E2E suite. It publishes merged JUnit results in the workflow run,
+retains the Appium log as an artifact, generates an Allure HTML report, and
+deploys it to GitHub Pages. The latest published report is available at
+[https://ricardorlg.github.io/dpg-interview/](https://ricardorlg.github.io/dpg-interview/).
+
+The workflow is intentionally manual (`workflow_dispatch`) so the full emulator
+suite is run on demand while the project remains in its current assignment
+delivery stage. Concurrency cancellation ensures that a newer run for the same
+branch supersedes an in-progress run.
+
 ## Entry and Exit Criteria
 
 ### Entry Criteria

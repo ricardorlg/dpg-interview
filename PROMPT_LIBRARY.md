@@ -60,6 +60,43 @@ documents. Include the latest verified execution result only when it is known,
 and keep future-work items aligned with TEST_PLAN.md and SUBMISSION.md.
 ```
 
+## GitHub Actions CI/CD Documentation
+
+```text
+Update the English documentation for the Video QA Challenge Android E2E test
+repository to describe the existing manually triggered GitHub Actions workflow.
+Use `.github/workflows/android-e2e.yml` as the source of truth; do not change
+the workflow unless explicitly requested.
+
+Update README.md and SUBMISSION.md with an actionable step-by-step guide:
+1. Open the repository on GitHub and select the Actions tab.
+2. Select the `Android E2E Tests` workflow.
+3. Click Run workflow.
+4. Select the branch to validate and click Run workflow again.
+5. Open the completed run to review the test summary, Appium log artifact, and
+   Allure report.
+
+Explain that the workflow uses `workflow_dispatch`, checks out the selected
+branch, enables KVM, configures Node.js and npm caching, installs locked
+dependencies with `npm ci`, starts the Android emulator defined in the workflow,
+and executes `npm run run.android.tests`. Document only the reports and
+artifacts actually produced by the workflow: merged JUnit results in GitHub
+Actions, the Appium log artifact, and the generated Allure HTML report deployed
+to GitHub Pages.
+
+Add a new CI/CD section to TEST_PLAN.md. Explain the deterministic CI execution
+environment, the manual trigger rationale, the execution evidence retained, and
+the workflow concurrency behavior when it is configured. Link to the published
+Allure report using exactly:
+https://ricardorlg.github.io/dpg-interview/
+
+Keep documentation concise, accurate to the workflow, and in English. Do not
+invent successful runs, artifact-retention periods, required checks, scheduled
+triggers, secrets, retries, or coverage gates that are not present in the
+workflow. Validate Markdown formatting and internal file references after the
+update.
+```
+
 ## Video Details Preview State
 
 ```text
