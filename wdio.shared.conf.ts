@@ -24,6 +24,7 @@ export const config: WebdriverIO.Config = {
       {
         outputDir: "allure-results",
         addConsoleLogs: true,
+        disableWebdriverScreenshotsReporting: false,
       },
     ],
     [

@@ -35,7 +35,7 @@ jobs:
       - name: Install project dependencies
         run: npm ci
 
-      - name: Start emulator, Appium, and Android tests
+      - name: Start emulator and run Android E2E tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 36
@@ -63,3 +63,31 @@ jobs:
           verbose_summary: true
           group_suite: true
           annotate_only: true
+
+      - name: Generate Allure report
+        if: ${{ !cancelled() }}
+        run: npx allure generate allure-results --clean --output allure-report
+
+      - name: Upload Allure report for GitHub Pages
+        if: ${{ !cancelled() }}
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: allure-report
+
+  deploy-allure-report:
+    name: Deploy Allure report to GitHub Pages
+    needs: android-e2e
+    if: ${{ always() && !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
