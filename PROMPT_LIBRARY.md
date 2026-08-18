@@ -226,7 +226,7 @@ Document the Screen Object pattern, using test/screenobjects/AppScreen.ts as the
 
 Define locator rules using the documented Video QA Challenge test identifiers and this priority: accessibility IDs first, Android UIAutomator second, XPath only as a last resort. State that appium:disableIdLocatorAutocompletion must be true and do not permit coordinate, text, inferred resource-ID, positional, or XPath locators when a documented accessibility identifier exists.
 
-Add a detailed "Adding a New Test" section that requires setup, navigation, and Debug Options orchestration to remain in screen objects so specs are small, simple, and limited to user-facing behavior and assertions. Require reuse of test/helpers/gestures.ts for scrolling, require error, negative, and other non-happy-path scenarios to use the application's Debug Options rather than mocks, network manipulation, or timing assumptions, and require the associated Mocha it to use .only during development. Require `describe.only` for focused validation of a changed spec and `it.only` for a changed test; do not run unrelated specs for focused changes. Require `.only` to be removed immediately after validation so it never remains in a delivered test. State that the existing application-reset hook must be reused and that no new before, beforeEach, afterEach, or after hooks may be added for application reset. Require an English reusable implementation prompt as part of every new-test delivery; it must include the scenario, preconditions, Debug Options state when applicable, screen objects, locators, actions, assertions, scrolling requirements, and MCP capabilities. Require use of the WebdriverIO MCP with exactly these capabilities:
+Add a detailed "Adding a New Test" section that requires setup, navigation, and Debug Options orchestration to remain in screen objects so specs are small, simple, and limited to user-facing behavior and assertions. Require reuse of test/helpers/gestures.ts for scrolling, require error, negative, and other non-happy-path scenarios to use the application's Debug Options rather than mocks, network manipulation, or timing assumptions, and require the associated Mocha it to use .only during development. Require every production or test-code change to run the narrowest existing test that exercises the changed behavior, unless the user explicitly directs otherwise. Require `describe.only` for focused validation of a changed spec and `it.only` for a changed test; do not run unrelated specs for focused changes. Require `.only` to be removed immediately after validation so it never remains in a delivered test. State that the existing application-reset hook must be reused and that no new before, beforeEach, afterEach, or after hooks may be added for application reset. Require an English reusable implementation prompt as part of every new-test delivery; it must include the scenario, preconditions, Debug Options state when applicable, screen objects, locators, actions, assertions, scrolling requirements, and MCP capabilities. Require use of the WebdriverIO MCP with exactly these capabilities:
 {
   "platformName": "Android",
   "appium:automationName": "UIAutomator2",
@@ -473,6 +473,57 @@ Use WebdriverIO MCP with:
 Select apps/VideoQAChallenge-debug.apk. Validate with:
 npm run build
 npm run run.android.tests
+```
+
+## Home Video Card Metadata Visibility
+
+```text
+Fix the `HomeVideoCard.checkContent()` Android E2E screen-object method so it
+does not assume every metadata element is visible after `HomeScreen` scrolls
+the card root into view. On small devices, a card near the end of the catalogue
+can have a partially visible root while its title, category, or duration is
+outside the viewport.
+
+Source of truth:
+- TEST_PLAN.md: P0-06 and P2-01
+- Test Assignment.pdf
+- Agents.md
+
+Update only `test/screenobjects/components/HomeVideoCard.ts` and directly
+related documentation. Keep the existing root visibility assertion. Before
+asserting each non-root metadata element, use the existing
+`scrollUntilElementIsVisible` helper from `test/helpers/gestures.ts` with
+`ScrollDirection.UP` and a maximum of five scroll attempts:
+1. Scroll the title (`id=content_title_*`) into view, then assert its expected
+   text. Supply an error-message callback stating that the title element was not
+   found after five scroll attempts.
+2. Scroll the category tag (Android UIAutomator text selector) into view, then
+   assert it is displayed. Supply an error-message callback stating that the
+   category element was not found after five scroll attempts.
+3. Scroll the duration (Android UIAutomator text selector) into view, then
+   assert it is displayed. Supply an error-message callback stating that the
+   duration element was not found after five scroll attempts.
+
+Do not add gestures, arbitrary waits, coordinates, XPath locators, test hooks,
+or selectors to specs. Keep the Screen Object pattern: scrolling and
+screen-specific synchronization belong in `HomeVideoCard`, and user-facing
+assertions remain in the spec. Preserve the documented locator strategy and
+use the existing application-reset hook.
+
+Inspect the APK at `apps/VideoQAChallenge-debug.apk` with WebdriverIO MCP using:
+{
+  "platformName": "Android",
+  "appium:automationName": "UIAutomator2",
+  "appium:deviceName": "emulator-5554",
+  "appium:udid": "emulator-5554",
+  "appium:disableIdLocatorAutocompletion": true,
+  "appium:allowInvisibleElements": true,
+  "appium:enableMultiWindows": true
+}
+
+Temporarily add `it.only` to the affected Home test while validating with
+`npm run run.android.tests`, then remove `.only` immediately. Run
+`npm run build` to type-check the change.
 ```
 
 ## Video Player Tests
