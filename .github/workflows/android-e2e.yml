@@ -45,6 +45,30 @@ jobs:
           emulator-boot-timeout: 300
           script: npm run run.android.tests
 
+      - name: merge retried test in junit report
+        if: ${{ !cancelled() }}
+        run: |
+          echo "Merging retried test results"
+          shopt -s nullglob  # Prevent literal glob expansion when no files match
+          for file in junit-results/test-report-android-*.xml; do
+            if [ -f "$file" ]; then
+              echo "Processing $file"
+              if npx tsx junit-merger.ts "$file"; then
+                echo "Successfully processed $file"
+              else
+                echo "Error: Failed to process $file (exit code: $?)"
+              fi
+            fi
+          done
+
+          # Check if any files were found
+          files=(junit-results/test-report-android-*.xml)
+          if [ ! -f "${files[0]}" ]; then
+            echo "No matching test report files found"
+          fi
+
+          echo "Merge process completed (with or without errors)"
+
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v6
         if: ${{ !cancelled() }}
@@ -63,6 +87,12 @@ jobs:
           verbose_summary: true
           group_suite: true
           annotate_only: true
+      - name: save appium logs
+        uses: actions/upload-artifact@v7
+        with:
+          name: appium-log
+          path: ./logs/appium.log
+          if-no-files-found: ignore
 
       - name: Generate Allure report
         if: ${{ !cancelled() }}

@@ -32,7 +32,12 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ["allure-report/**", "allure-results/**"],
+    ignores: [
+      "allure-report/**",
+      "allure-results/**",
+      "junit-results/**",
+      "junit-merger.ts",
+    ],
   },
   {
     files: ["*spec.ts"],
