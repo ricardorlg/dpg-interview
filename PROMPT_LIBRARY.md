@@ -2,6 +2,32 @@
 
 Reusable English prompts for the Video QA Challenge Android test project.
 
+## Manual Android E2E GitHub Action
+
+```text
+Add a GitHub Actions workflow at `.github/workflows/android-e2e.yml` that runs
+the Android E2E suite only through `workflow_dispatch`.
+
+The repository is an Android-only Video QA Challenge project using TypeScript,
+WebdriverIO 9, Appium 3.6.0, UIAutomator2, Mocha, and the APK at
+`apps/VideoQAChallenge-debug.apk`. Use `actions/checkout@v6` to check out the
+repository and `actions/setup-node@v6` with Node.js 24 and npm caching. Install
+dependencies with `npm ci`, then verify the source with `npm run build`.
+
+Install Appium 3.6.0 globally and install its UIAutomator2 driver. Use
+`reactivecircus/android-emulator-runner@v2` to create a headless Pixel 6 Android
+16 emulator with API level 36, Google APIs, and x86_64 architecture. While the
+emulator is running, start Appium at `127.0.0.1:4723`, wait for
+`http://127.0.0.1:4723/status` to respond, and execute
+`npm run run.android.tests`.
+
+Set read-only repository permissions, a 30-minute job timeout, and a
+branch-scoped concurrency group that cancels stale manual runs. Upload
+`allure-results/` and the Appium log as a 14-day artifact whenever the run is
+not cancelled. Do not add retries that could conceal flaky end-to-end tests, do
+not require secrets, and keep all workflow labels and comments in English.
+```
+
 ## Project README
 
 ```text
@@ -92,7 +118,6 @@ Validate the documentation and code references with npm run build. Return a
 concise English summary of implemented coverage, uncovered scenarios, and every
 documentation change.
 ```
-
 
 ## Requirements Document
 

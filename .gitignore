@@ -45,5 +45,4 @@ node_modules/
 allure-report/
 allure-results/
 .claude/
-package-lock.json
 skills-lock.json

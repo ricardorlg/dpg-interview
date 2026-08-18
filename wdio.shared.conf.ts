@@ -26,6 +26,21 @@ export const config: WebdriverIO.Config = {
         addConsoleLogs: true,
       },
     ],
+    [
+      "junit",
+      {
+        outputDir: "./junit-results/",
+        errorOptions: {
+          failure: "message",
+          stacktrace: "stack",
+        },
+        suiteNameFormat: /[^a-zA-Z0-9@→~]+/,
+        packageName: `Android`,
+        outputFileFormat: function (options) {
+          return `test-report-android-${options.cid}.xml`;
+        },
+      },
+    ],
   ],
   mochaOpts: {
     retries: 1,
