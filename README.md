@@ -28,9 +28,10 @@ rules in `Agents.md`.
 
 ## Prerequisites
 
-- Node.js and npm
+- Node.js 25.9.0 and npm 11.12.1
 - Android SDK and an Android emulator or device
-- Appium server running on port `4723`
+- Appium 3.6.0 running on port `4723`
+- Android Emulator with Android 16
 - An Android device available as `emulator-5554`, or equivalent values supplied
   through `.env.local`
 - The APK at `apps/VideoQAChallenge-debug.apk`

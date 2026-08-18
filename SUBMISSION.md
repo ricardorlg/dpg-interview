@@ -60,7 +60,8 @@ UIAutomator2 and enables exact accessibility-ID matching through
 
 | Field | Record |
 | --- | --- |
-| Environments | Android emulator (`emulator-5554`) and a personal Android device, using Appium and UIAutomator2. |
+| Environments | Android Emulator (`emulator-5554`) with Android 16 and a personal Android device, using Appium 3.6.0 and UIAutomator2. |
+| Runtime | Node.js 25.9.0 and npm 11.12.1. |
 | Primary environment rationale | The emulator was selected for convenience and repeatable local execution. |
 | Latest audit validation | `npm run build` and `npm run eslint:check` completed successfully. |
 | Full end-to-end result | `npm run run.android.tests` completed successfully on the Android emulator: 21 passing tests in 3 minutes 0.5 seconds; one Home-screen test passed on its first retry. |
